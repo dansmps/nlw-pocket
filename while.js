@@ -11,7 +11,7 @@ const start = () => {
           break
       case "sair":
           return   
-        }
+    }
 }
 
 
