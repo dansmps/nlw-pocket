@@ -1,12 +1,25 @@
-const { select } = require('@inquirer/prompts');
+const { select, input } = require('@inquirer/prompts');
 
+
+let meta = {
+  value: "tomar 3L de água todos os dias",
+  checked: false
+}
+
+let metas =  [ meta ]
+
+//aync é usado para acionar o await, que espera o usuário fazer uma ação 
 const cadastrarMeta = async () => {
   const meta = await input({message: "digite sua meta:"})
-
-   if(meta.lenght == 0){
-    console.log("A meta não pode ser vaziasssss")
+  console.debug(JSON.stringify(meta))
+   if(meta.length == 0){
+    console.log("A meta não pode ser vazia")
       return
   }
+
+metas.push({
+  value: "meta", checked: false
+})
 
 } 
 
@@ -27,8 +40,8 @@ const start = async () => {
     // Tratamento das opções selecionadas
     switch (opcao) {
       case "cadastrar":
-        console.log("Vamos cadastrar");
-        break;
+        await cadastrarMeta()
+        break
       case "listar":
         console.log("Vamos listar");
         break;

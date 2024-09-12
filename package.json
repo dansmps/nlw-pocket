@@ -63,5 +63,8 @@
 		"environmentVariables": {
 			"FORCE_COLOR": "1"
 		}
+	},
+	"dependencies": {
+		"inquirer": "^10.2.2"
 	}
 }
