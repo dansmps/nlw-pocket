@@ -29,3 +29,6 @@ function start(){
 }
 
 start()
+
+//estrutura while
+

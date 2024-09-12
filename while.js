@@ -1,5 +1,4 @@
-const { select, input } = require('@inquirer/prompts');
-
+const { select, input, checkbox } = require('@inquirer/prompts');
 
 let meta = {
   value: "tomar 3L de água todos os dias",
@@ -8,24 +7,55 @@ let meta = {
 
 let metas =  [ meta ]
 
-//aync é usado para acionar o await, que espera o usuário fazer uma ação 
+//async é usado para acionar o await, que espera o usuário fazer uma ação 
 const cadastrarMeta = async () => {
   const meta = await input({message: "digite sua meta:"})
   console.debug(JSON.stringify(meta))
-   if(meta.length == 0){
+  if(meta.length == 0){
     console.log("A meta não pode ser vazia")
-      return
+    return
   }
 
 metas.push({
-  value: "meta", checked: false
+  value: meta, checked: false
 })
 
 } 
 
+const listarMetas = async () => {
+  console.log(metas)
+  const respostas = await checkbox({
+    message: "Use a seta para mudar de metas,o espaço para marcar e desmacar metas, e o enter para finalizar essa meta",
+    choices: [...metas],
+    instructions: false
+  }) 
+   
+  console.log(respostas)
+  if(respostas.length == 0){
+    console.log("nenhuma rota está selecionada")
+    return
 
+  }
+ 
+  metas.forEach((m) => {
+    m.checked = false
+  })
 
-const start = async () => {
+  respostas.forEach((resposta) => {
+    const meta = metas.find((m) => {
+      return m.value == resposta
+    })
+
+    console.log(meta)
+
+    meta.checked = true
+  })
+
+  console.log('Meta(s) concluída(s)')
+  console.log(metas)
+}
+
+async function start() {
   while (true) {
     // Exibe o menu de seleção e aguarda a escolha do usuário
     const opcao = await select({
@@ -35,15 +65,15 @@ const start = async () => {
         { name: "Listar metas", value: "listar" },
         { name: "Sair", value: "sair" }
       ]
-    });
+    })
 
     // Tratamento das opções selecionadas
     switch (opcao) {
       case "cadastrar":
-        await cadastrarMeta()
-        break
+        await cadastrarMeta();
+        break;
       case "listar":
-        console.log("Vamos listar");
+        await listarMetas();
         break;
       case "sair":
         console.log("Saindo...");
@@ -52,9 +82,7 @@ const start = async () => {
         console.log("Opção inválida, tente novamente.");
     }
   }
-};
+}
 
 // Chama a função 'start' para iniciar o menu
 start();
-
-
