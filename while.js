@@ -29,6 +29,10 @@ const listarMetas = async () => {
     choices: [...metas],
     instructions: false
   }) 
+
+  metas.forEach((m) => {
+    m.checked = false
+  })
    
   console.log(respostas)
   if(respostas.length == 0){
@@ -36,10 +40,6 @@ const listarMetas = async () => {
     return
 
   }
- 
-  metas.forEach((m) => {
-    m.checked = false
-  })
 
   respostas.forEach((resposta) => {
     const meta = metas.find((m) => {
@@ -73,6 +73,20 @@ const metasRealizadas = async () => {
 }
 
 
+const metasAbertas = async () => {
+  const abertas = metas.filter((metas) => {
+  return meta.checked != true
+  })
+  
+  if(aberta.length){
+   console.log("Não existem metas em aberto :)")
+  }
+  await select({
+   message: "metas abertas" + abertas.length,
+   choices: [...abertas]
+
+  })
+}  
 
 
 async function start() {
@@ -84,6 +98,7 @@ async function start() {
         { name: "Cadastrar meta", value: "cadastrar" },
         { name: "Listar metas", value: "listar" },
         { name: "Metas realizadas", value: "realizadas" },
+        { name: "Metas abertas", value: "abertas" },
         { name: "Sair", value: "sair" }
       ]
     })
@@ -99,6 +114,9 @@ async function start() {
       case "realizadas":
         await metasRealizadas()
         break
+        case "abertas":
+          await metasAbertas()
+          break
       case "sair":
         console.log("Saindo...");
         return; // Encerra o loop e a execução do programa
